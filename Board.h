@@ -19,12 +19,9 @@ class SudokuBoard
 
         void printBoard();
 
-        /*
         void fillSquare(int i, int j, int val);
-        bool isSafe(int i, int j, int val);
+        void markSquare(int i, int j, vector<int> marks);
         bool checkCorrectness();
-        */
-
 };
 
-//  [Last modified: 2018 09 07 at 13:02:54 EDT]
+//  [Last modified: 2018 09 07 at 14:44:24 EDT]
