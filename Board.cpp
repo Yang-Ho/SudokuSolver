@@ -4,19 +4,15 @@
 
 using namespace::std;
 
-//vector<vector<vector<int>>> candidates; // Used to keep track of candidates of a cell
-
 SudokuBoard::SudokuBoard(): 
-    grid_size(3),
-    board(9, vector<int>(9, 0)),
-    candidates(9, vector<vector<int>>(9, vector<int>(9, -1)))
+    block_size(3),
+    board(9, vector<Cell>(9, {0, vector<bool>(9, true)}))
 {
 }
 
 SudokuBoard::SudokuBoard(int N): 
-    grid_size(N),
-    board(N * N, vector<int>(N * N, 0)),
-    candidates(N * N, vector<vector<int>>(N * N, vector<int>(N * N, -1)))
+    block_size(N),
+    board(N*N, vector<Cell>(N*N, {0, vector<bool>(N*N, true)}))
 {
 }
 
@@ -28,18 +24,19 @@ void SudokuBoard::printBoard()
 {
     int row_count = 0;
     int col_count = 0;
-    for (vector<int> row : board) {
+    for (vector<Cell> row : board) {
         cout<<" ";
-        for (int val : row) {
+        for (Cell cell : row) {
+            int val = cell.value;
             cout<<val;
             col_count += 1;
-            if (col_count == grid_size) {
+            if (col_count == block_size) {
                 col_count = 0;
                 cout<<" ";
             }
         }
         row_count += 1;
-        if (row_count == grid_size) {
+        if (row_count == block_size) {
             row_count = 0;
             cout<<"\n";
         }
@@ -47,40 +44,77 @@ void SudokuBoard::printBoard()
     }
 }
 
-void SudokuBoard::fillSquare(int i, int j, int val)
+void SudokuBoard::printMarkings()
 {
-    board[i][j] = val;
+    int row_count = 0;
+    int col_count = 0;
+    for (vector<Cell> row : board) {
+        cout<<" ";
+        for (Cell cell : row) {
+            for (bool mark : cell.marks) {
+                cout<<mark;
+            }
+            cout<<"|";
+            col_count += 1;
+            if (col_count == block_size) {
+                col_count = 0;
+                cout<<" ";
+            }
+        }
+        row_count += 1;
+        if (row_count == block_size) {
+            row_count = 0;
+            cout<<"\n";
+        }
+        cout<<endl;
+    }
 }
 
-void SudokuBoard::markSquare(int i, int j, vector<int> marks)
+void SudokuBoard::fillCell(int row, int col, int val)
 {
-    for (int mark : marks) {
-        if (candidates[i][j][mark] == -1) {
-            candidates[i][j][mark] = 1;
+    board[row][col].value = val;
+    if (val > 0) {
+        for (int i = 0; i != getBoardSize(); i++) {
+            // Update markings for row and column
+            markCell(row, i, val, false);
+            markCell(i, col, val, false);
+        }
+        // Update markings for block
+        int block_start_row = (getBlockNumber(row, col) / getBlockSize()) * getBlockSize();
+        int block_start_col = (getBlockNumber(row, col) % getBlockSize()) * getBlockSize();
+        for (int row_offset = 0; row_offset != 3; row_offset++) {
+            for (int col_offset = 0; col_offset != 3; col_offset++) {
+                markCell(block_start_row + row_offset, block_start_col + col_offset, val, false);
+            }
         }
     }
 }
 
-bool SudokuBoard::checkCorrectness()
+void SudokuBoard::markCell(int row, int col, int val, bool mark)
+{
+    board[row][col].marks[val - 1] = mark;
+}
+
+bool SudokuBoard::isValid()
 {
     // Check rows 
-    for (vector<int> row : board) {
+    for (vector<Cell> row : board) {
         vector<bool> is_present(9, false);
-        for (int val : row) {
-            if (val > 0) { 
-                if (is_present[val - 1]) {
+        for (Cell cell : row) {
+            if (cell.value > 0) { 
+                if (is_present[cell.value - 1]) {
                     return false;
                 }
-                is_present[val - 1] = true;
+                is_present[cell.value - 1] = true;
             }
         }
     }
 
     // check columns
-    for (int i = 0; i != grid_size * grid_size; i++) {
+    for (int i = 0; i != block_size * block_size; i++) {
         vector<bool> is_present(9, false);
-        for (int j = 0; j != grid_size * grid_size; j++) {
-            int val = board[j][i];
+        for (int j = 0; j != block_size * block_size; j++) {
+            int val = board[j][i].value;
             if (val > 0) {
                 if (is_present[val - 1]) {
                     return false;
@@ -91,13 +125,13 @@ bool SudokuBoard::checkCorrectness()
     }
 
     // check square
-    for (int i = 0; i != grid_size; i++) {
-        for (int j = 0; j != grid_size; j++) {
+    for (int row = 0; row != block_size; row++) {
+        for (int col = 0; col != block_size; col++) {
             vector<bool> is_present(9, false);
-            for (int k = 0; k != grid_size * grid_size; k++) {
-                int adjusted_i = k / grid_size + i * 3;
-                int adjusted_j = k % grid_size + j * 3;
-                int val = board[adjusted_i][adjusted_j];
+            for (int i = 0; i != block_size * block_size; i++) {
+                int adjusted_row = i / block_size + row * 3;
+                int adjusted_col = i % block_size + col * 3;
+                int val = board[adjusted_row][adjusted_col].value;
                 if (val > 0) {
                     if (is_present[val - 1]) {
                         return false;
@@ -107,9 +141,7 @@ bool SudokuBoard::checkCorrectness()
             }
         }
     }
-
     return true;
 }
 
-
-//  [Last modified: 2018 09 07 at 15:27:04 EDT]
+//  [Last modified: 2018 09 15 at 17:08:22 EDT]

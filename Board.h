@@ -1,27 +1,44 @@
 #ifndef BOARD_H
 #define BOARD_H 
-#endif /* BOARD_H */
 
 #include<vector>
+#include<unordered_set>
 
 using namespace std;
+
+struct Cell
+{
+    int value;
+    vector<bool> marks;
+};
 
 class SudokuBoard 
 {
     private:
-        int grid_size; // For convience
-        vector<vector<int>> board;
-        vector<vector<vector<int>>> candidates; // Used to keep track of candidates of a cell
+        int block_size;
+        vector<vector<Cell>> board;
     public:
         SudokuBoard();
         SudokuBoard(int N);
         ~SudokuBoard();
 
         void printBoard();
+        void printMarkings();
 
-        void fillSquare(int i, int j, int val);
-        void markSquare(int i, int j, vector<int> marks);
-        bool checkCorrectness();
+        void fillCell(int row, int col, int val);
+        void markCell(int row, int col, int candidate, bool val);
+        
+        int getBlockSize() { return block_size; };
+        int getBoardSize() { return block_size * block_size; };
+
+        const int getBlockNumber(int row, int col) const { return (row / block_size) * block_size + (col / block_size); }
+        const int getBlockCell(int row, int col) const { return (row % block_size) * block_size + (col % block_size); }
+
+        const int getCellValue(int row, int col) const { return board[row][col].value; };
+        const vector<bool> getCellMarks(int row, int col) const { return board[row][col].marks; };
+
+        bool isValid();
 };
 
-//  [Last modified: 2018 09 07 at 14:44:24 EDT]
+#endif /* BOARD_H */
+//  [Last modified: 2018 09 15 at 17:06:04 EDT]
