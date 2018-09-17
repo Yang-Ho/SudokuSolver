@@ -10,6 +10,8 @@ struct Cell
 {
     int value;
     vector<bool> marks;
+
+    int getMarkCount();
 };
 
 class SudokuBoard 
@@ -39,7 +41,13 @@ class SudokuBoard
         const vector<bool> getCellMarks(int row, int col) const { return board[row][col].marks; };
 
         bool isValid();
+        bool isFilled();
+
+        void setCells(vector<Cell> cells);
+
+        Cell getCell(int row, int col) { return board[row][col]; };
+        int getCellCount(int row, int col) { return board[row][col].getMarkCount(); };
 };
 
 #endif /* BOARD_H */
-//  [Last modified: 2018 09 17 at 13:05:16 EDT]
+//  [Last modified: 2018 09 17 at 17:57:10 EDT]

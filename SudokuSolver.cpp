@@ -17,26 +17,28 @@ int main()
             char digit;
             cin>>digit;
             int val = digit - '0' - 1;
+            if (val > 9) {
+                val -= 6;
+            }
             board.fillCell(i, j, val);
         }
     }
 
     cout<<"Finished reading in sudoku board\n";
     board.printBoard();
-    board.printMarks();
 
     Solver solver;
-    if (solver.isValidBoard((board))) {
+    if (board.isValid()) {
         cout<<"Valid board\n";
     } else {
         cout<<"Invalid board\n";
     }
-    solver.processSudokuBoard(board);
+    solver.solve(board);
     board.printBoard();
-    if (solver.isValidBoard((board))) {
-        cout<<"Valid board\n";
+    if (board.isFilled() && board.isValid()) {
+        cout<<"Solved board\n";
     } else {
-        cout<<"Invalid board\n";
+        cout<<"Unsolved board\n";
     }
 }
-//  [Last modified: 2018 09 17 at 12:49:02 EDT]
+//  [Last modified: 2018 09 17 at 18:59:04 EDT]

@@ -16,6 +16,7 @@ class Solver
         Rule* basic_column_rule;
         Rule* basic_block_rule;
         Rule* single_candidate_rule;
+        int depth = 0;
     protected:
         SudokuBoard* global_root_board;
     public:
@@ -26,11 +27,9 @@ class Solver
         void solve(SudokuBoard& root);
         void recursiveSolve(SudokuBoard& board); 
 
-        bool processSudokuBoard(SudokuBoard& board);
-
-        bool isValidBoard(SudokuBoard& board);
+        void processSudokuBoard(SudokuBoard& board);
 };
 
 #endif /* SOLVER_H */
 
-//  [Last modified: 2018 09 15 at 13:50:32 EDT]
+//  [Last modified: 2018 09 17 at 18:22:43 EDT]

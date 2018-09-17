@@ -4,6 +4,17 @@
 
 using namespace::std;
 
+int Cell::getMarkCount()
+{
+    int count = 0;
+    for (bool mark : marks) {
+        if (mark) {
+            count += 1;
+        }
+    }
+    return count;
+}
+
 SudokuBoard::SudokuBoard(): 
     block_size(3),
     board(9, vector<Cell>(9, {0, vector<bool>(9, true)}))
@@ -24,11 +35,17 @@ void SudokuBoard::printBoard()
 {
     int row_count = 0;
     int col_count = 0;
+    cout<<'\n';
     for (vector<Cell> row : board) {
         cout<<" ";
         for (Cell cell : row) {
             int val = cell.value;
-            cout<<val + 1;
+            if (val + 1 > 9) {
+                char c = (char)(val + 6 + '0' + 1);
+                cout<<c;
+            } else {
+                cout<<val + 1;
+            }
             col_count += 1;
             if (col_count == block_size) {
                 col_count = 0;
@@ -38,9 +55,9 @@ void SudokuBoard::printBoard()
         row_count += 1;
         if (row_count == block_size) {
             row_count = 0;
-            cout<<"\n";
+            cout<<'\n';
         }
-        cout<<endl;
+        cout<<'\n';
     }
 }
 
@@ -161,4 +178,32 @@ bool SudokuBoard::isValid()
     return true;
 }
 
-//  [Last modified: 2018 09 17 at 12:50:13 EDT]
+bool SudokuBoard::isFilled()
+{
+    bool board_filled = true;
+    for (int row = 0; row != getBoardSize(); row++) {
+        for (int column = 0; column != getBoardSize(); column++) {
+            if (board[row][column].value < 0) {
+                board_filled = false;
+                break;
+            }
+        }
+        if (!board_filled) {
+            break;
+        }
+    }
+    return board_filled && isValid();
+}
+
+void SudokuBoard::setCells(vector<Cell> cells)
+{
+    int boardSize = getBoardSize();
+    for (int row = 0; row != boardSize; row++) {
+        for (int column = 0; column != boardSize; column++) {
+            board[row][column].value = cells[row * boardSize + column].value;
+            board[row][column].marks = cells[row * boardSize + column].marks;
+        }
+    }
+}
+
+//  [Last modified: 2018 09 17 at 18:58:33 EDT]
