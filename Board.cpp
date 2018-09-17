@@ -28,7 +28,7 @@ void SudokuBoard::printBoard()
         cout<<" ";
         for (Cell cell : row) {
             int val = cell.value;
-            cout<<val;
+            cout<<val + 1;
             col_count += 1;
             if (col_count == block_size) {
                 col_count = 0;
@@ -73,7 +73,7 @@ void SudokuBoard::printMarkings()
 void SudokuBoard::fillCell(int row, int col, int val)
 {
     board[row][col].value = val;
-    if (val > 0) {
+    if (val > -1) {
         for (int i = 0; i != getBoardSize(); i++) {
             // Update markings for row and column
             markCell(row, i, val, false);
@@ -92,7 +92,7 @@ void SudokuBoard::fillCell(int row, int col, int val)
 
 void SudokuBoard::markCell(int row, int col, int val, bool mark)
 {
-    board[row][col].marks[val - 1] = mark;
+    board[row][col].marks[val] = mark;
 }
 
 bool SudokuBoard::isValid()
@@ -101,11 +101,11 @@ bool SudokuBoard::isValid()
     for (vector<Cell> row : board) {
         vector<bool> is_present(9, false);
         for (Cell cell : row) {
-            if (cell.value > 0) { 
-                if (is_present[cell.value - 1]) {
+            if (cell.value > -1) { 
+                if (is_present[cell.value]) {
                     return false;
                 }
-                is_present[cell.value - 1] = true;
+                is_present[cell.value] = true;
             }
         }
     }
@@ -116,10 +116,10 @@ bool SudokuBoard::isValid()
         for (int j = 0; j != block_size * block_size; j++) {
             int val = board[j][i].value;
             if (val > 0) {
-                if (is_present[val - 1]) {
+                if (is_present[val]) {
                     return false;
                 }
-                is_present[val - 1] = true;
+                is_present[val] = true;
             }
         }
     }
@@ -133,10 +133,10 @@ bool SudokuBoard::isValid()
                 int adjusted_col = i % block_size + col * 3;
                 int val = board[adjusted_row][adjusted_col].value;
                 if (val > 0) {
-                    if (is_present[val - 1]) {
+                    if (is_present[val]) {
                         return false;
                     }
-                    is_present[val - 1] = true;
+                    is_present[val] = true;
                 }
             }
         }
@@ -144,4 +144,4 @@ bool SudokuBoard::isValid()
     return true;
 }
 
-//  [Last modified: 2018 09 15 at 17:08:22 EDT]
+//  [Last modified: 2018 09 16 at 23:19:04 EDT]

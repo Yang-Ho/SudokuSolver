@@ -16,7 +16,7 @@ int main()
         for (int j = 0; j < size * size; j++) {
             char digit;
             cin>>digit;
-            int val = digit - '0';
+            int val = digit - '0' - 1;
             board.fillCell(i, j, val);
         }
     }
@@ -38,4 +38,4 @@ int main()
         cout<<"Invalid board\n";
     }
 }
-//  [Last modified: 2018 09 15 at 17:19:29 EDT]
+//  [Last modified: 2018 09 16 at 23:19:05 EDT]
