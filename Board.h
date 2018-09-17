@@ -23,7 +23,8 @@ class SudokuBoard
         ~SudokuBoard();
 
         void printBoard();
-        void printMarkings();
+        void printMarks();
+        void printMarks(int row, int col);
 
         void fillCell(int row, int col, int val);
         void markCell(int row, int col, int candidate, bool val);
@@ -41,4 +42,4 @@ class SudokuBoard
 };
 
 #endif /* BOARD_H */
-//  [Last modified: 2018 09 15 at 17:06:04 EDT]
+//  [Last modified: 2018 09 17 at 13:05:16 EDT]

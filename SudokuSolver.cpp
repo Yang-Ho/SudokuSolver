@@ -23,6 +23,7 @@ int main()
 
     cout<<"Finished reading in sudoku board\n";
     board.printBoard();
+    board.printMarks();
 
     Solver solver;
     if (solver.isValidBoard((board))) {
@@ -38,4 +39,4 @@ int main()
         cout<<"Invalid board\n";
     }
 }
-//  [Last modified: 2018 09 16 at 23:19:05 EDT]
+//  [Last modified: 2018 09 17 at 12:49:02 EDT]

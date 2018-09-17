@@ -44,7 +44,7 @@ void SudokuBoard::printBoard()
     }
 }
 
-void SudokuBoard::printMarkings()
+void SudokuBoard::printMarks()
 {
     int row_count = 0;
     int col_count = 0;
@@ -52,7 +52,11 @@ void SudokuBoard::printMarkings()
         cout<<" ";
         for (Cell cell : row) {
             for (bool mark : cell.marks) {
-                cout<<mark;
+                if (cell.value < 0) {
+                    cout<<mark;
+                } else {
+                    cout<<'x';
+                }
             }
             cout<<"|";
             col_count += 1;
@@ -68,6 +72,19 @@ void SudokuBoard::printMarkings()
         }
         cout<<endl;
     }
+}
+
+void SudokuBoard::printMarks(int row, int col)
+{
+    int val = getCellValue(row, col);
+    for (bool mark : getCellMarks(row, col)) {
+        if (val < 0) {
+            cout<<mark;
+        } else {
+            cout<<'x';
+        }
+    }
+    cout<<"\n";
 }
 
 void SudokuBoard::fillCell(int row, int col, int val)
@@ -144,4 +161,4 @@ bool SudokuBoard::isValid()
     return true;
 }
 
-//  [Last modified: 2018 09 16 at 23:19:04 EDT]
+//  [Last modified: 2018 09 17 at 12:50:13 EDT]

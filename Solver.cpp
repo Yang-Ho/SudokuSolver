@@ -45,14 +45,17 @@ void Solver::recursiveSolve(SudokuBoard& board)
 bool Solver::processSudokuBoard(SudokuBoard& board)
 {
     bool state_changed = true;
-    while (state_changed) {
-        state_changed = single_candidate_rule->apply(board);
-    }
-    return true;
+    //while (state_changed) {
+        //state_changed = single_candidate_rule->apply(board);
+        //state_changed = basic_column_rule->apply(board);
+        //state_changed = basic_row_rule->apply(board);
+        state_changed = basic_block_rule->apply(board);
+    //}
+    return state_changed;
 }
 
 bool Solver::isValidBoard(SudokuBoard& board)
 {
     return board.isValid();
 }
-//  [Last modified: 2018 09 15 at 17:19:18 EDT]
+//  [Last modified: 2018 09 17 at 15:39:12 EDT]
