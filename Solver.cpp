@@ -7,28 +7,28 @@
 using namespace::std;
 
 Solver::Solver():
-    basic_row_rule(new BasicRowRule()),
-    basic_column_rule(new BasicColumnRule()),
-    basic_block_rule(new BasicBlockRule()),
-    single_candidate_rule(new SingleCandidateRule())
+    naked_candidate_row_rule(new NakedCandidateRowRule()),
+    naked_candidate_column_rule(new NakedCandidateColumnRule()),
+    naked_candidate_block_rule(new NakedCandidateBlockRule()),
+    naked_candidate_rule(new NakedCandidateRule())
 {
 }
 
 Solver::Solver(vector<Rule*> r):
     rules(r),
-    basic_row_rule(new BasicRowRule()),
-    basic_column_rule(new BasicColumnRule()),
-    basic_block_rule(new BasicBlockRule()),
-    single_candidate_rule(new SingleCandidateRule())
+    naked_candidate_row_rule(new NakedCandidateRowRule()),
+    naked_candidate_column_rule(new NakedCandidateColumnRule()),
+    naked_candidate_block_rule(new NakedCandidateBlockRule()),
+    naked_candidate_rule(new NakedCandidateRule())
 {
 }
 
 Solver::~Solver()
 {
-    delete basic_row_rule;
-    delete basic_column_rule;
-    delete basic_block_rule;
-    delete single_candidate_rule;
+    delete naked_candidate_row_rule;
+    delete naked_candidate_column_rule;
+    delete naked_candidate_block_rule;
+    delete naked_candidate_rule;
 }
 
 void Solver::solve(SudokuBoard& root)
@@ -125,20 +125,20 @@ void Solver::processSudokuBoard(SudokuBoard& board)
 {
     bool state_changed = true;
     while (state_changed) {
-        if (single_candidate_rule->apply(board)) {
+        if (naked_candidate_rule->apply(board)) {
             continue;
         }
-        if (basic_row_rule->apply(board)) {
+        if (naked_candidate_row_rule->apply(board)) {
             continue;
         }
-        if (basic_column_rule->apply(board)) {
+        if (naked_candidate_column_rule->apply(board)) {
             continue;
         }
-        if (basic_block_rule->apply(board)) {
+        if (naked_candidate_block_rule->apply(board)) {
             continue;
         }
         state_changed = false;
     }
 }
 
-//  [Last modified: 2018 09 17 at 18:27:34 EDT]
+//  [Last modified: 2018 09 30 at 12:12:20 EDT]

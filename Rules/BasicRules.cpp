@@ -5,7 +5,7 @@
 
 using namespace::std;
 
-bool SingleCandidateRule::apply(SudokuBoard& board)
+bool NakedCandidateRule::apply(SudokuBoard& board)
 {
     bool state_changed = false;
     for (int row = 0; row != board.getBoardSize(); row++) {
@@ -31,7 +31,7 @@ bool SingleCandidateRule::apply(SudokuBoard& board)
     return state_changed;
 }
 
-bool BasicRowRule::apply(SudokuBoard& board)
+bool NakedCandidateRowRule::apply(SudokuBoard& board)
 {
     bool state_changed = false;
     int candidate = 0;
@@ -74,7 +74,7 @@ bool BasicRowRule::apply(SudokuBoard& board)
     return state_changed;
 }
 
-bool BasicColumnRule::apply(SudokuBoard& board)
+bool NakedCandidateColumnRule::apply(SudokuBoard& board)
 {
     bool state_changed = false;
     int candidate = 0;
@@ -117,7 +117,7 @@ bool BasicColumnRule::apply(SudokuBoard& board)
     return state_changed;
 }
 
-bool BasicBlockRule::apply(SudokuBoard& board)
+bool NakedCandidateBlockRule::apply(SudokuBoard& board)
 {
     bool state_changed = false;
     int candidate = 0;
@@ -172,4 +172,4 @@ bool BasicBlockRule::apply(SudokuBoard& board)
     }
     return state_changed;
 }
-//  [Last modified: 2018 09 17 at 15:40:14 EDT]
+//  [Last modified: 2018 09 30 at 12:09:46 EDT]
